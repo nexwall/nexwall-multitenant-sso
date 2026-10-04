@@ -80,19 +80,16 @@ secret, err := handoff.GenerateSecret()
 
 ## Status
 
-Not yet imported by either consuming repo. This package exists, is tested,
-and is ready to depend on, but the integration work on each side (Phase 1.6
-/ Phase 2 in `nexwall-partner-multitenant`; the new `/sso/handoff` endpoint
-in `nexwall-controller`, per that repo's own
-`docs/adr/0001-sso-handoff-from-partner-program.md`) is still pending.
+**Compiled and tested (2026-10-04)**: `go vet ./...` clean, all 16 tests
+pass (`go test ./... -v`), against the real Go 1.26.8 toolchain. The test
+suite covers: round-trip sign/verify, expired tokens, wrong-tenant tokens,
+tampered signatures, tampered payloads, wrong secret, replay, malformed
+input, and `MemorySeenStore`'s concurrency guarantee.
 
-**This package has not been compiled or run with an actual Go toolchain
-yet** — it was written in an environment without network access or a Go
-installation available. Run `go vet ./... && go test ./...` before pushing
-or depending on it. The test suite covers: round-trip sign/verify, expired
-tokens, wrong-tenant tokens, tampered signatures, tampered payloads, wrong
-secret, replay, malformed input, and `MemorySeenStore`'s concurrency
-guarantee.
+Not yet imported by either consuming repo. The integration work on each
+side (Phase 1.6 / Phase 2 in `nexwall-partner-multitenant`; the new
+`/sso/handoff` endpoint in `nexwall-controller`, per that repo's own
+`docs/adr/0001-sso-handoff-from-partner-program.md`) is still pending.
 
 ## License
 

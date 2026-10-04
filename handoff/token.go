@@ -70,7 +70,9 @@ type Claims struct {
 // Sign produces a handoff token string for the given claims, signed with
 // secret. IssuedAt, ExpiresAt, and JTI are set by this function -- callers
 // only need to populate Subject, TenantID, and (optionally) Role. Passing
-// ttl <= 0 uses DefaultTTL.
+// ttl == 0 uses DefaultTTL; any other value (including negative, which
+// produces an already-expired token -- useful in tests) is honored exactly
+// as given, not silently overridden.
 func Sign(secret []byte, claims Claims, ttl time.Duration) (string, error) {
 	if len(secret) == 0 {
 		return "", errors.New("handoff: secret must not be empty")
@@ -81,7 +83,7 @@ func Sign(secret []byte, claims Claims, ttl time.Duration) (string, error) {
 	if claims.TenantID == "" {
 		return "", errors.New("handoff: claims.TenantID is required")
 	}
-	if ttl <= 0 {
+	if ttl == 0 {
 		ttl = DefaultTTL
 	}
 
